@@ -132,7 +132,7 @@ body {
     max-width: 820px;
     min-height: 1120px;
     height: 1120px;
-    padding: 46px 52px 36px;
+    padding: 38px 46px 26px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     border: 1px solid #e2e8f0;
     border-radius: 2px;
@@ -286,8 +286,60 @@ body {
 .cv-body-single {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 14px;
     flex-grow: 1;
+}
+
+.project-highlight-box {
+    background: #f8fafc;
+    border-left: 2.5px solid #0f172a;
+    padding: 7px 12px;
+    margin-top: 7px;
+    border-radius: 0 4px 4px 0;
+}
+
+.project-highlight-box h5 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.project-highlight-box p {
+    font-size: 0.79rem;
+    color: #475569;
+    line-height: 1.42;
+}
+
+.tech-expertise-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tech-expertise-list li {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.46;
+    position: relative;
+    margin-bottom: 5px;
+    padding-left: 13px;
+}
+
+.tech-expertise-list li:last-child {
+    margin-bottom: 0;
+}
+
+.tech-expertise-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.tech-expertise-list strong {
+    color: #0f172a;
+    font-weight: 600;
 }
 
 .skill-checklist.grid-2col {
