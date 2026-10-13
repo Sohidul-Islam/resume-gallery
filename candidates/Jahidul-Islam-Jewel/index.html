@@ -16,22 +16,26 @@
 <body>
 
     <!-- Screen Action Bar (Hidden when printing) -->
-    <div class="print-action">
+    <header class="print-action">
         <div class="action-left">
             <a href="../../index.html" class="nav-btn">
                 <i class="fa-solid fa-arrow-left"></i>
-                <span>Candidate Directory</span>
+                <span>Directory</span>
             </a>
             <span class="doc-type-badge">Professional CV</span>
             <span class="page-indicator-badge">2 Pages (A4)</span>
         </div>
         <div class="action-right">
-            <button class="print-btn" onclick="window.print()">
-                <i class="fa-solid fa-print"></i>
-                <span>Print / Save as PDF</span>
+            <button class="nav-btn preview-btn" onclick="previewCv()" title="View full print preview">
+                <i class="fa-solid fa-eye"></i>
+                <span>Preview</span>
+            </button>
+            <button class="print-btn download-btn" onclick="downloadPdf()" title="Download as PDF or Print">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <span>Download PDF</span>
             </button>
         </div>
-    </div>
+    </header>
 
     <!-- ====================================================================
          PAGE 1: Profile, Executive Summary & Complete Work Experience
@@ -274,5 +278,14 @@
         </footer>
     </div>
 
+    <!-- Scripts for Preview & PDF Download -->
+    <script>
+        function downloadPdf() {
+            window.print();
+        }
+        function previewCv() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
