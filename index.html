@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Document Directory & Management</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: var(--font-family);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 30px 20px 60px;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        /* Top Header */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 28px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+        }
+
+        /* Metrics / Counter Strip */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .icon-all { background: #eff6ff; color: #2563eb; }
+        .icon-cv { background: #ecfdf5; color: #059669; }
+        .icon-resume { background: #f0f9ff; color: #0284c7; }
+        .icon-biodata { background: #faf5ff; color: #7c3aed; }
+
+        .stat-info .stat-num {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+
+        .stat-info .stat-label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 3px;
+        }
+
+        /* Filter & Search Bar */
+        .filter-bar {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 7px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pill-btn:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .pill-btn.active {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+
+        /* Candidate Grid */
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+
+        .candidate-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: #cbd5e1;
+        }
+
+        .card-header-bar {
+            padding: 14px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafbfc;
+        }
+
+        .doc-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge-cv { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+        .badge-resume { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .badge-biodata { background: #faf5ff; color: #6d28d9; border: 1px solid #e9d5ff; }
+
+        .folder-badge {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: monospace;
+            background: #f1f5f9;
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+
+        .card-body {
+            padding: 20px 18px;
+            display: flex;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .candidate-avatar {
+            width: 76px;
+            height: 92px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            object-fit: cover;
+            background: #f8fafc;
+            flex-shrink: 0;
+        }
+
+        .candidate-avatar-placeholder {
+            width: 76px;
+            height: 92px;
+            border-radius: 6px;
+            border: 1px dashed var(--border-color);
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        .candidate-meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .candidate-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .candidate-role {
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 500;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .candidate-contact {
+            list-style: none;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .candidate-contact li {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .candidate-contact li i {
+            width: 14px;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .card-actions {
+            padding: 12px 18px;
+            background: #fafbfc;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-view {
+            flex: 1;
+            background: #ffffff;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-view:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn-print {
+            flex: 1;
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-print:hover {
+            background: #000000;
+        }
+
+        /* Empty state */
+        .empty-state {
+            grid-column: 1 / -1;
+            background: var(--surface);
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius-md);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: var(--radius-md);
+            max-width: 620px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+            color: #0f172a;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #0f172a;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .step-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-size: 0.92rem;
+        }
+
+        .step-num {
+            background: #2563eb;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .step-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-left: 32px;
+        }
+
+        .code-box {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin: 8px 0 0 32px;
+            overflow-x: auto;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .candidates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dash-header">
+            <div class="header-title">
+                <h1><i class="fas fa-folder-open" style="color: var(--accent);"></i> Candidate Directory</h1>
+                <p>Manage, view, and print candidate documents (CV, Resume, Biodata)</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-user-plus"></i> Add Candidate
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon icon-all">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num" id="statAll">0</div>
+                    <div class="stat-label">Total Candidates</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-cv">
+                    <i class="fas fa-file-lines"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num" id="statCv">0</div>
+                    <div class="stat-label">Curriculum Vitae</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-resume">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num" id="statResume">0</div>
+                    <div class="stat-label">Resumes</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-biodata">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-num" id="statBiodata">0</div>
+                    <div class="stat-label">Biodatas</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search & Filter Controls -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by name, role, email, or location..." oninput="handleSearch()">
+            </div>
+            <div class="filter-pills">
+                <button class="pill-btn active" data-filter="all" onclick="setFilter('all', this)">All Documents</button>
+                <button class="pill-btn" data-filter="CV" onclick="setFilter('CV', this)">CV</button>
+                <button class="pill-btn" data-filter="Resume" onclick="setFilter('Resume', this)">Resume</button>
+                <button class="pill-btn" data-filter="Biodata" onclick="setFilter('Biodata', this)">Biodata</button>
+            </div>
+        </div>
+
+        <!-- Candidate Cards Grid -->
+        <main id="candidatesGrid" class="candidates-grid">
+            <!-- Dynamic Content Injected Here -->
+        </main>
+    </div>
+
+    <!-- Hidden Printing Iframe for 1-Click Instant Print -->
+    <iframe id="printFrame" style="position:fixed;right:100%;bottom:100%;width:0;height:0;border:0;"></iframe>
+
+    <!-- Add Candidate Modal -->
+    <div id="addModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-folder-plus" style="color: var(--accent);"></i> Add New Candidate</h2>
+                <button class="close-btn" onclick="closeAddModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px;">
+                    Candidates are stored in organized self-contained folders inside <code>candidates/</code>.
+                    Follow these 3 simple steps to add a new candidate:
+                </p>
+
+                <div class="step-box">
+                    <div class="step-header">
+                        <span class="step-num">1</span>
+                        <span>Duplicate the Starter Template</span>
+                    </div>
+                    <div class="step-desc">
+                        Copy the template folder in <code>candidates/_template/</code> and name it with your candidate's name:
+                    </div>
+                    <div class="code-box">candidates/Your-Candidate-Name/</div>
+                </div>
+
+                <div class="step-box">
+                    <div class="step-header">
+                        <span class="step-num">2</span>
+                        <span>Add Photo & Edit Document</span>
+                    </div>
+                    <div class="step-desc">
+                        Place the candidate's portrait inside <code>assets/photo.jpg</code>, then open <code>index.html</code> to adjust their name and information.
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <div class="step-header">
+                        <span class="step-num">3</span>
+                        <span>Register to Directory (Quick Add Form Below)</span>
+                    </div>
+                    <div class="step-desc">
+                        Fill in this quick form to register the candidate immediately to this dashboard:
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="quickAddForm" onsubmit="handleQuickAdd(event)" style="margin-top: 20px;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Candidate Full Name *</label>
+                            <input type="text" id="candName" class="form-control" placeholder="e.g. Rakib Hasan" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Document Type *</label>
+                            <select id="candDocType" class="form-control" required>
+                                <option value="CV">CV (Curriculum Vitae)</option>
+                                <option value="Resume">Resume</option>
+                                <option value="Biodata">Biodata</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Professional Role / Title</label>
+                            <input type="text" id="candRole" class="form-control" placeholder="e.g. Marketing Specialist">
+                        </div>
+                        <div class="form-group">
+                            <label>Folder Name *</label>
+                            <input type="text" id="candFolder" class="form-control" placeholder="e.g. Rakib-Hasan" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="candEmail" class="form-control" placeholder="candidate@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="candPhone" class="form-control" placeholder="+880 1XXX-XXXXXX">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Location / City</label>
+                        <input type="text" id="candLocation" class="form-control" placeholder="e.g. Chittagong, Bangladesh">
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px;">
+                        <button type="button" class="btn-view" onclick="closeAddModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Register Candidate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-info-circle"></i>
+        <span id="toastMsg">Notification</span>
+    </div>
+
+    <!-- Data registry -->
+    <script src="candidates-data.js"></script>
+
+    <script>
+        // State
+        let allCandidates = [];
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCandidates();
+            setupNameAutoFolder();
+        });
+
+        // Auto populate folder name when typing candidate name
+        function setupNameAutoFolder() {
+            const nameInput = document.getElementById('candName');
+            const folderInput = document.getElementById('candFolder');
+            nameInput.addEventListener('input', () => {
+                if (!folderInput.dataset.manual) {
+                    folderInput.value = nameInput.value.trim().replace(/\s+/g, '-');
+                }
+            });
+            folderInput.addEventListener('input', () => {
+                folderInput.dataset.manual = 'true';
+            });
+        }
+
+        // Load candidates from registry + localStorage
+        function loadCandidates() {
+            let baseList = (window.CANDIDATE_LIST && Array.isArray(window.CANDIDATE_LIST)) ? [...window.CANDIDATE_LIST] : [];
+            
+            // Check localStorage for any newly registered candidates
+            try {
+                const stored = localStorage.getItem('CUSTOM_CANDIDATES');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        const existingIds = new Set(baseList.map(c => c.id));
+                        parsed.forEach(c => {
+                            if (!existingIds.has(c.id)) {
+                                baseList.push(c);
+                            }
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error("Storage error:", err);
+            }
+
+            allCandidates = baseList;
+            updateStats();
+            renderCandidates();
+        }
+
+        // Update Counter Statistics
+        function updateStats() {
+            const total = allCandidates.length;
+            const cvs = allCandidates.filter(c => c.docType.toLowerCase() === 'cv').length;
+            const resumes = allCandidates.filter(c => c.docType.toLowerCase() === 'resume').length;
+            const biodatas = allCandidates.filter(c => c.docType.toLowerCase() === 'biodata').length;
+
+            document.getElementById('statAll').textContent = total;
+            document.getElementById('statCv').textContent = cvs;
+            document.getElementById('statResume').textContent = resumes;
+            document.getElementById('statBiodata').textContent = biodatas;
+        }
+
+        // Filter Selection
+        function setFilter(filter, btn) {
+            activeFilter = filter;
+            document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCandidates();
+        }
+
+        // Live Search
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+            renderCandidates();
+        }
+
+        // Render Candidates Grid
+        function renderCandidates() {
+            const container = document.getElementById('candidatesGrid');
+            container.innerHTML = '';
+
+            const filtered = allCandidates.filter(c => {
+                const matchFilter = (activeFilter === 'all') || (c.docType.toLowerCase() === activeFilter.toLowerCase());
+                const matchSearch = !searchQuery || 
+                    (c.name && c.name.toLowerCase().includes(searchQuery)) ||
+                    (c.role && c.role.toLowerCase().includes(searchQuery)) ||
+                    (c.email && c.email.toLowerCase().includes(searchQuery)) ||
+                    (c.location && c.location.toLowerCase().includes(searchQuery));
+                return matchFilter && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-slash"></i>
+                        <h3>No candidates found</h3>
+                        <p>No candidate records match your current filter or search criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const badgeClass = c.docType.toLowerCase() === 'cv' ? 'badge-cv' : 
+                                   c.docType.toLowerCase() === 'resume' ? 'badge-resume' : 'badge-biodata';
+                const docUrl = `${c.folder}/index.html`;
+
+                const card = document.createElement('div');
+                card.className = 'candidate-card';
+                card.innerHTML = `
+                    <div class="card-header-bar">
+                        <span class="doc-badge ${badgeClass}"><i class="fas fa-file-alt"></i> ${c.docType}</span>
+                        <span class="folder-badge"><i class="far fa-folder"></i> ${c.folder.replace('candidates/', '')}</span>
+                    </div>
+                    <div class="card-body">
+                        ${c.photo ? 
+                            `<img src="${c.photo}" alt="${c.name}" class="candidate-avatar" onerror="this.onerror=null; this.outerHTML='<div class=\\\'candidate-avatar-placeholder\\\'><i class=\\\'fas fa-user\\\'></i></div>';">` : 
+                            `<div class="candidate-avatar-placeholder"><i class="fas fa-user"></i></div>`}
+                        <div class="candidate-meta">
+                            <h2 class="candidate-name" title="${c.name}">${c.name}</h2>
+                            <div class="candidate-role" title="${c.role || ''}">${c.role || 'Candidate Profile'}</div>
+                            <ul class="candidate-contact">
+                                ${c.email ? `<li title="${c.email}"><i class="fas fa-envelope"></i> ${c.email}</li>` : ''}
+                                ${c.phone ? `<li title="${c.phone}"><i class="fas fa-phone"></i> ${c.phone}</li>` : ''}
+                                ${c.location ? `<li title="${c.location}"><i class="fas fa-location-dot"></i> ${c.location}</li>` : ''}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="${docUrl}" target="_blank" class="btn-view">
+                            <i class="fas fa-external-link-alt"></i> View Document
+                        </a>
+                        <button class="btn-print" onclick="quickPrint('${docUrl}', '${c.name}')">
+                            <i class="fas fa-print"></i> Quick Print
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Quick Print via hidden iframe
+        function quickPrint(url, name) {
+            showToast(`Loading document for ${name}...`);
+            const iframe = document.getElementById('printFrame');
+            
+            iframe.onload = () => {
+                showToast(`Opening print dialog for ${name}...`);
+                setTimeout(() => {
+                    try {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                    } catch (e) {
+                        console.error("Print error:", e);
+                        window.open(url, '_blank');
+                    }
+                }, 400);
+            };
+
+            iframe.src = url;
+        }
+
+        // Modal Controls
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+
+        // Handle Quick Add Submission
+        function handleQuickAdd(e) {
+            e.preventDefault();
+            const name = document.getElementById('candName').value.trim();
+            const docType = document.getElementById('candDocType').value;
+            const role = document.getElementById('candRole').value.trim();
+            const folderSlug = document.getElementById('candFolder').value.trim();
+            const email = document.getElementById('candEmail').value.trim();
+            const phone = document.getElementById('candPhone').value.trim();
+            const location = document.getElementById('candLocation').value.trim();
+
+            if (!name || !folderSlug) return;
+
+            const newCandidate = {
+                id: folderSlug.toLowerCase(),
+                name: name,
+                role: role || (docType + ' Profile'),
+                docType: docType,
+                folder: `candidates/${folderSlug}`,
+                photo: `candidates/${folderSlug}/assets/photo.jpg`,
+                email: email,
+                phone: phone,
+                location: location,
+                updatedAt: new Date().toISOString().split('T')[0]
+            };
+
+            // Save to localStorage
+            try {
+                let stored = JSON.parse(localStorage.getItem('CUSTOM_CANDIDATES') || '[]');
+                stored = stored.filter(c => c.id !== newCandidate.id);
+                stored.push(newCandidate);
+                localStorage.setItem('CUSTOM_CANDIDATES', JSON.stringify(stored));
+            } catch (err) {
+                console.error("Error saving candidate:", err);
+            }
+
+            allCandidates.push(newCandidate);
+            updateStats();
+            renderCandidates();
+            closeAddModal();
+            document.getElementById('quickAddForm').reset();
+            delete document.getElementById('candFolder').dataset.manual;
+
+            showToast(`Registered "${name}". Don't forget to create "candidates/${folderSlug}"!`);
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal on escape or background click
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAddModal();
+        });
+        document.getElementById('addModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('addModal')) closeAddModal();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Candidate Name] - [Document Type]</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+    <!-- Top Action Bar (Screen Only - Hidden in Print) -->
+    <div class="print-action">
+        <div class="action-left">
+            <a href="../../index.html" class="nav-btn">
+                <i class="fas fa-arrow-left"></i> Back to Directory
+            </a>
+            <!-- Change badge class to badge-cv, badge-resume, or badge-biodata -->
+            <span class="doc-type-badge badge-cv">Document: [CV / Resume / Biodata]</span>
+        </div>
+        <div class="action-right">
+            <button id="printBtn" class="print-btn" onclick="window.print()">
+                <i class="fas fa-print"></i> Print / Save PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Printable Document Container -->
+    <div class="cv-container">
+        <header class="cv-header">
+            <div class="header-content">
+                <div class="photo-section">
+                    <!-- Replace with candidate photo in assets/ folder -->
+                    <img src="assets/photo.jpg" alt="Profile Photo" class="profile-photo" onerror="this.src='https://via.placeholder.com/140x170?text=Photo'">
+                </div>
+                <div class="name-section">
+                    <h1>[CANDIDATE FULL NAME]</h1>
+                    <div class="candidate-title">[Professional Designation / Title]</div>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>candidate.email@example.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+880 1XXX-XXXXXX</span>
+                        </div>
+                        <div class="contact-item" style="grid-column: span 2;">
+                            <i class="fas fa-location-dot"></i>
+                            <span>[Full Address / City, Country]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="cv-body">
+            <!-- Section: Professional Summary -->
+            <section class="cv-section">
+                <h2 class="section-title">Professional Summary</h2>
+                <p class="summary-text">
+                    [A concise 3-4 sentence overview of your professional background, key strengths, experience level, and career objective.]
+                </p>
+            </section>
+
+            <!-- Section: Core Skills -->
+            <section class="cv-section">
+                <h2 class="section-title">Core Skills</h2>
+                <ul class="simple-list skills-list">
+                    <li><i class="fas fa-check-circle"></i> [Core Skill 1]</li>
+                    <li><i class="fas fa-check-circle"></i> [Core Skill 2]</li>
+                    <li><i class="fas fa-check-circle"></i> [Core Skill 3]</li>
+                    <li><i class="fas fa-check-circle"></i> [Core Skill 4]</li>
+                    <li><i class="fas fa-check-circle"></i> [Core Skill 5]</li>
+                    <li><i class="fas fa-check-circle"></i> [Core Skill 6]</li>
+                </ul>
+            </section>
+
+            <!-- Section: Work Experience -->
+            <section class="cv-section">
+                <h2 class="section-title">Work Experience</h2>
+                <div class="experience-item">
+                    <div class="item-header">
+                        <h3>[Job Position Title]</h3>
+                        <span class="date">[Start Date] - [Present / End Date]</span>
+                    </div>
+                    <p class="company">[Company / Institution Name]</p>
+                    <ul class="bullets">
+                        <li>[Key responsibility or achievement with measurable impact]</li>
+                        <li>[Key responsibility or project delivered]</li>
+                        <li>[Team collaboration or operational highlight]</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section: Education -->
+            <section class="cv-section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                    <div class="item-header">
+                        <h3>[Degree / Certificate Name]</h3>
+                        <span class="date">[Year]</span>
+                    </div>
+                    <p class="institution">[University / Board / Institution Name]</p>
+                </div>
+            </section>
+
+            <!-- Section: Personal Details -->
+            <section class="cv-section">
+                <h2 class="section-title">Personal Details</h2>
+                <ul class="details-list">
+                    <li><strong>Date of Birth:</strong> <span>[DD Month YYYY]</span></li>
+                    <li><strong>Father's Name:</strong> <span>[Father's Name]</span></li>
+                    <li><strong>Mother's Name:</strong> <span>[Mother's Name]</span></li>
+                    <li><strong>Nationality:</strong> <span>Bangladeshi</span></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer class="cv-footer">
+            <p>References and documentation available upon request.</p>
+        </footer>
+    </div>
+</body>
+
+</html>
