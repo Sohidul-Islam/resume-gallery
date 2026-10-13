@@ -354,6 +354,33 @@ body {
     gap: 10px 20px;
 }
 
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table tr td {
+    padding: 5.5px 0;
+    font-size: 0.83rem;
+    vertical-align: top;
+}
+
+.details-table tr:not(:last-child) td {
+    border-bottom: 1px dotted #e5e7eb;
+}
+
+.details-table .dt-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 46%;
+}
+
+.details-table .dt-value {
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-align: right;
+}
+
 .details-table.single-col {
     width: 100%;
 }
@@ -405,11 +432,11 @@ body {
 }
 
 .edu-card {
-    padding: 9px 14px;
+    padding: 11px 16px;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    margin-bottom: 9px;
+    margin-bottom: 12px;
 }
 
 .edu-card:last-child {
@@ -420,17 +447,17 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
 }
 
 .edu-card-title {
-    font-size: 0.86rem;
+    font-size: 0.87rem;
     font-weight: 700;
     color: var(--text-primary);
 }
 
 .edu-card-inst {
-    font-size: 0.81rem;
+    font-size: 0.82rem;
     color: #475569;
     font-weight: 500;
 }
@@ -445,9 +472,9 @@ body {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 0.81rem;
-    line-height: 1.5;
+    padding: 13px 16px;
+    font-size: 0.82rem;
+    line-height: 1.55;
     color: var(--text-secondary);
 }
 
